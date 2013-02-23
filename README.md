@@ -10,7 +10,6 @@ package main
 import (
   "rackspace/monitoring"
   "rackspace/identity"
-  "encoding/json"
   "fmt"
 )
 
