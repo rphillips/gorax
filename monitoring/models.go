@@ -17,44 +17,44 @@ limitations under the License.
 package monitoring
 
 type PaginationMetadata struct {
-	Count int `json:"count"`
-	Limit int `json:"limit"`
-	Marker *string `json:"marker"`
+	Count      int     `json:"count"`
+	Limit      int     `json:"limit"`
+	Marker     *string `json:"marker"`
 	NextMarker *string `json:"next_marker"`
-	NextHref *string `json:"next_href"`
+	NextHref   *string `json:"next_href"`
 }
 
 type Entity struct {
-	Id string `json:"id"`
-	Label *string `json:"label"`
-	Metadata map[string]string `json:"metadata"`
-	Managed bool `json:"managed"`
-	Uri *string `json:"uri"`
-	AgentId *string `json:"agent_id"`
+	Id          string            `json:"id"`
+	Label       *string           `json:"label"`
+	Metadata    map[string]string `json:"metadata"`
+	Managed     bool              `json:"managed"`
+	Uri         *string           `json:"uri"`
+	AgentId     *string           `json:"agent_id"`
 	IPAddresses map[string]string `json:"ip_addresses"`
 }
 
 type PaginatedEntityList struct {
-	Values []Entity
+	Values   []Entity
 	Metadata PaginationMetadata
 }
 
 type Check struct {
-	Id string `json:"id"`
-	Label *string `json:"label"`
-	Type string `json:"type"`
-	Details map[string]interface{} `json:"details"`
-	MonitoringZonesPoll []string `json:"monitoring_zones_poll"`
-	Timeout int `json:"timeout"`
-	Period int `json:"period"`
-	TargetAlias *string `json:"target_alias"`
-	TargetHostname *string `json:"target_hostname"`
-	TargetResolver *string `json:"target_resolver"`
-	Disabled bool `json:"disabled"`
-	Metadata map[string]interface{} `json:"metadata"`
+	Id                  string                 `json:"id"`
+	Label               *string                `json:"label"`
+	Type                string                 `json:"type"`
+	Details             map[string]interface{} `json:"details"`
+	MonitoringZonesPoll []string               `json:"monitoring_zones_poll"`
+	Timeout             int                    `json:"timeout"`
+	Period              int                    `json:"period"`
+	TargetAlias         *string                `json:"target_alias"`
+	TargetHostname      *string                `json:"target_hostname"`
+	TargetResolver      *string                `json:"target_resolver"`
+	Disabled            bool                   `json:"disabled"`
+	Metadata            map[string]interface{} `json:"metadata"`
 }
 
 type PaginatedCheckList struct {
-	Values []Check
+	Values   []Check
 	Metadata PaginationMetadata
 }

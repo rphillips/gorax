@@ -22,9 +22,9 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"mime"
 	"net/http"
 	"net/http/httputil"
-	"mime"
 )
 
 type RestError struct {
@@ -36,10 +36,10 @@ func (e *RestError) Error() string {
 }
 
 type RestRequest struct {
-	Method string
-	Path   string
-	Header http.Header
-	Body   RequestBody
+	Method              string
+	Path                string
+	Header              http.Header
+	Body                RequestBody
 	ExpectedStatusCodes []int
 }
 
