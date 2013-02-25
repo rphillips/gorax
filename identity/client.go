@@ -17,8 +17,8 @@ limitations under the License.
 package identity
 
 import (
+	"gorax"
 	"net/http"
-	"rackspace"
 )
 
 var (

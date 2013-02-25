@@ -17,9 +17,9 @@ limitations under the License.
 package monitoring
 
 import (
+	"gorax"
+	"gorax/identity"
 	"net/http"
-	"rackspace"
-	"rackspace/identity"
 )
 
 type MonitoringClient struct {

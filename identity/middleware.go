@@ -18,7 +18,7 @@ package identity
 
 import (
 	"fmt"
-	"rackspace"
+	"gorax"
 	"sync"
 	"time"
 )
