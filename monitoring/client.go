@@ -17,8 +17,8 @@ limitations under the License.
 package monitoring
 
 import (
-	"github.com/sam-falvo/gorax"
-	"github.com/sam-falvo/gorax/identity"
+	"github.com/racker/gorax"
+	"github.com/racker/gorax/identity"
 	"net/http"
 )
 

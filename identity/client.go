@@ -17,7 +17,7 @@ limitations under the License.
 package identity
 
 import (
-	"github.com/sam-falvo/gorax"
+	"github.com/racker/gorax"
 	"net/http"
 )
 

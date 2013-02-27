@@ -18,7 +18,7 @@ package identity
 
 import (
 	"fmt"
-	"github.com/sam-falvo/gorax"
+	"github.com/racker/gorax"
 	"sync"
 	"time"
 )
