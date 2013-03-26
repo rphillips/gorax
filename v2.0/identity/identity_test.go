@@ -1,20 +1,20 @@
 package identity
 
 import (
-	"testing"
+	"io/ioutil"
 	"net/http"
 	"strings"
-	"io/ioutil"
+	"testing"
 )
 
 const (
-	USERNAME = "joe_user"
-	APIKEY = "joe_user_api_key_opaque_string"
-	TOKEN = "aaaaa-bbbbb-ccccc-dddd"
-	EXPIRES = "2012-04-13T13:15:00.000-05:00"
-	TENANT_ID = "12345"
+	USERNAME    = "joe_user"
+	APIKEY      = "joe_user_api_key_opaque_string"
+	TOKEN       = "aaaaa-bbbbb-ccccc-dddd"
+	EXPIRES     = "2012-04-13T13:15:00.000-05:00"
+	TENANT_ID   = "12345"
 	TENANT_NAME = "Opaque Name Here"
-	
+
 	// Example taken from http://docs.rackspace.com/auth/api/v2.0/auth-client-devguide/content/Sample_Request_Response-d1e64.html
 	// and then removed extraneous records.
 	SUCCESSFUL_LOGIN_RESPONSE = `{
@@ -148,11 +148,11 @@ func TestNewIdentity(t *testing.T) {
 
 type testTransport struct {
 	response string
-	called uint
+	called   uint
 }
 
 func (t *testTransport) RoundTrip(req *http.Request) (rsp *http.Response, err error) {
-	t.called++;
+	t.called++
 
 	headers := make(http.Header)
 	headers.Add("Content-Type", "application/xml; charset=UTF-8")
@@ -160,18 +160,18 @@ func (t *testTransport) RoundTrip(req *http.Request) (rsp *http.Response, err er
 	body := ioutil.NopCloser(strings.NewReader(t.response))
 
 	rsp = &http.Response{
-		Status: "204 OK",
-		StatusCode: 200,
-		Proto: "HTTP/1.1",
-		ProtoMajor: 1,
-		ProtoMinor: 1,
-		Header: headers,
-		Body: body,
-		ContentLength: -1,
+		Status:           "204 OK",
+		StatusCode:       200,
+		Proto:            "HTTP/1.1",
+		ProtoMajor:       1,
+		ProtoMinor:       1,
+		Header:           headers,
+		Body:             body,
+		ContentLength:    -1,
 		TransferEncoding: nil,
-		Close: true,
-		Trailer: nil,
-		Request: req,
+		Close:            true,
+		Trailer:          nil,
+		Request:          req,
 	}
 	return
 }
@@ -204,12 +204,12 @@ func TestAuthenticationWithTenant(t *testing.T) {
 	}
 	tenantId, _ := id.TenantId()
 	if tenantId != TENANT_ID {
-		t.Error("Auth: Expected tenant ID",TENANT_ID,"got:",tenantId)
+		t.Error("Auth: Expected tenant ID", TENANT_ID, "got:", tenantId)
 		return
 	}
 	tenantName, _ := id.TenantName()
 	if tenantName != TENANT_NAME {
-		t.Error("Auth: Expected tenant name",TENANT_NAME,"got:",tenantName)
+		t.Error("Auth: Expected tenant name", TENANT_NAME, "got:", tenantName)
 		return
 	}
 }

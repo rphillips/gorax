@@ -1,11 +1,11 @@
 package identity
 
 import (
-	"strings"
-	"net/http"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"encoding/json"
+	"net/http"
+	"strings"
 )
 
 const (
@@ -16,13 +16,13 @@ const (
 // The Identity type encapsulates both the set of credentials used to authenticate
 // against the Rackspace Identity API, as well as the relevant proof of authentication
 // once acquired.
-type Identity struct{
+type Identity struct {
 	username, apiKey, region string
-	isAuthenticated bool
-	httpClient *http.Client
-	token, expires string
-	tenantId, tenantName string
-	access *AccessBody
+	isAuthenticated          bool
+	httpClient               *http.Client
+	token, expires           string
+	tenantId, tenantName     string
+	access                   *AccessBody
 }
 
 // NewIdentity creates a new set of papers to use for authentication against the Rackspace Identity service.
@@ -33,9 +33,9 @@ type Identity struct{
 // Specify "" for default region (currently US).
 func NewIdentity(userName, key, reg string) *Identity {
 	return &Identity{
-		username: userName,
-		apiKey: key,
-		region: strings.ToUpper(reg),
+		username:   userName,
+		apiKey:     key,
+		region:     strings.ToUpper(reg),
 		httpClient: &http.Client{},
 	}
 }
@@ -136,16 +136,16 @@ type AccessBody struct {
 // rarely use this record directly, unless you intend on marshalling or unmarshalling
 // Identity API JSON records yourself.
 type Access struct {
-	Token Token
+	Token          Token
 	ServiceCatalog []CatalogEntry
-	User User
+	User           User
 }
 
 // Token encapsulates an authentication token and when it expires.  It also includes
 // tenant information if available.
 type Token struct {
 	Id, Expires string
-	Tenant Tenant
+	Tenant      Tenant
 }
 
 // Tenant encapsulates tenant authentication information.  If, after authentication,
@@ -157,7 +157,7 @@ type Tenant struct {
 // CatalogEntry encapsulates a service catalog record.
 type CatalogEntry struct {
 	Name, Type string
-	Endpoints []EntryEndpoint
+	Endpoints  []EntryEndpoint
 }
 
 // EntryEndpoint encapsulates how to get to the API of some service.
@@ -168,9 +168,9 @@ type EntryEndpoint struct {
 // User encapsulates the user credentials, and provides visibility in what
 // the user can do through its role assignments.
 type User struct {
-	Id, Name string
+	Id, Name          string
 	XRaxDefaultRegion string `json:"RAX-AUTH:defaultRegion"`
-	Roles []Role
+	Roles             []Role
 }
 
 // Role encapsulates a permission that a user can rely on.
