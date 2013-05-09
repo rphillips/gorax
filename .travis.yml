@@ -1,1 +1,11 @@
 language: go
+branches:
+  only:
+   - master
+   - working
+install:
+ - go get github.com/racker/perigee
+script:
+ - go -v test github.com/racker/gorax/v2.0/identity
+ - go -v test github.com/racker/gorax/v2.0/cloud/servers
+
