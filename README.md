@@ -9,6 +9,10 @@ The name, gorax, is derived from its sister (and, presently, far more complete) 
 
 **This library is still in the very early stages of development. Unless you want to contribute, it probably isn't what you want**
 
+## Build Status
+
+[![Build Status](https://travis-ci.org/sam-falvo/gorax.png)](https://travis-ci.org/sam-falvo/gorax)
+
 ## Installation and Testing
 
 To install:
