@@ -11,7 +11,7 @@ The name, gorax, is derived from its sister (and, presently, far more complete) 
 
 ## Build Status
 
-[![Build Status](https://travis-ci.org/sam-falvo/gorax.png)](https://travis-ci.org/sam-falvo/gorax)
+[![Build Status](https://travis-ci.org/racker/gorax.png)](https://travis-ci.org/racker/gorax)
 
 ## Installation and Testing
 
