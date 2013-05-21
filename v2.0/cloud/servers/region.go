@@ -121,6 +121,7 @@ func (r *raxRegion) DeleteServerById(id string) error {
 	return err
 }
 
+
 // SetAdminPassword requests that the server with the specified ID
 // have its administrative password changed.  For Linux, BSD, or other
 // pure-POSIX-compliant systems, this administrator corresponds to the
@@ -141,6 +142,38 @@ func (r *raxRegion) SetAdminPassword(id string, pw string) error {
 			struct {
 				AdminPass string `json:"adminPass"`
 			}{pw},
+		},
+		OkCodes: []int{202},
+		MoreHeaders: map[string]string{
+			"X-Auth-Token": r.token,
+		},
+	})
+	return err
+}
+
+// RebootServer requests that the server with the specified ID be rebooted.
+// Two reboot mechanisms exist.
+//
+// - Hard.  This will physically power-cycle the unit.
+// - Soft.  This will attempt to use the server's software-based mechanisms to restart the machine.
+//          E.g., "shutdown -r now" on Linux.
+
+func (r *raxRegion) RebootServer(id string, isHard bool) error {
+	baseUrl, err := r.EndpointByName("servers")
+	serverUrl := fmt.Sprintf("%s/%s/action", baseUrl, id)
+	typ := "SOFT"
+	if isHard {
+		typ = "HARD"
+	}
+	err = perigee.Post(serverUrl, perigee.Options{
+		ReqBody: &struct {
+			Reboot struct {
+				Type string `json:"type"`
+			} `json:"reboot"`
+		}{
+			struct {
+				Type string `json:"type"`
+			}{typ},
 		},
 		OkCodes: []int{202},
 		MoreHeaders: map[string]string{
