@@ -14,7 +14,7 @@ var userName = flag.String("u", "", "Rackspace account username")
 var passWord = flag.String("p", "", "Rackspace account password")
 var region = flag.String("r", "DFW", "Rackspace region in which to create the server")
 var serverId = flag.String("i", "", "ID of server you want to reboot")
-var hard = flag.Bool("-hard", false, "Specify if you desire a hard reboot (true) versus a soft reboot (false; default)")
+var hard = flag.Bool("hard", false, "Specify if you desire a hard reboot (true) versus a soft reboot (false; default)")
 
 func main() {
 	flag.Parse()
