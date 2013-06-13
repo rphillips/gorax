@@ -1,4 +1,4 @@
-# gorax
+# gorax V0.0.1
 
 The Go ecosystem seems to lack a comprehensive cloud services API (at the time this README was first written).
 As both Go and cloud services are trending in many businesses, and with Go used increasingly in infrastructure, it seems like an odd omission.
