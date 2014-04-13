@@ -154,6 +154,13 @@ type ProcessesHostInfo struct {
 	} `json:"info"`
 }
 
+type AgentTarget struct {
+	Values []struct {
+		Id    string `json:"id"`
+		Label string `json:"label"`
+	} `json:"values"`
+}
+
 type PaginatedEntityList struct {
 	Values   []Entity
 	Metadata PaginationMetadata

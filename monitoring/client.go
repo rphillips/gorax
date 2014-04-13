@@ -192,6 +192,25 @@ func (m *MonitoringClient) HostInfoEntity(entityId string, hostInfoType string) 
 	return info, err
 }
 
+func (m *MonitoringClient) AgentTargets(entityId string, agentType string) (interface{}, error) {
+	info := &AgentTarget{}
+
+	path := fmt.Sprintf("/entities/%s/agent/check_types/%s/targets", entityId, agentType)
+	restReq := &gorax.RestRequest{
+		Method:              "GET",
+		Path:                path,
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return nil, err
+	}
+	resp.DeserializeBody(info)
+
+	return info, err
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{
