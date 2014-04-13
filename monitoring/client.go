@@ -17,9 +17,13 @@ limitations under the License.
 package monitoring
 
 import (
+	"fmt"
+	"net/http"
+	"os"
+
+	"github.com/coreos/etcd/third_party/github.com/coreos/go-log/log"
 	"github.com/racker/gorax"
 	"github.com/racker/gorax/identity"
-	"net/http"
 )
 
 // A MonitoringClient object exists for each outstanding connection to the Rackspace Cloud Monitoring APIs.
@@ -131,6 +135,61 @@ func (m *MonitoringClient) ListChecks(entityId string) ([]Check, error) {
 	}
 
 	return checks, nil
+}
+
+func (m *MonitoringClient) DeleteEntity(entityId string) (*Entity, error) {
+	restReq := &gorax.RestRequest{
+		Method:              "DELETE",
+		Path:                "/entities/" + entityId,
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	_, err := m.client.PerformRequest(restReq)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return nil, err
+}
+
+func (m *MonitoringClient) HostInfoEntity(entityId string, hostInfoType string) (interface{}, error) {
+	var info interface{}
+
+	switch hostInfoType {
+	case "cpus":
+		info = &CpuHostInfo{}
+	case "memory":
+		info = &MemoryHostInfo{}
+	case "network_interfaces":
+		info = &NetworkInterfaceHostInfo{}
+	case "system":
+		info = &SystemHostInfo{}
+	case "disks":
+		info = &DiskHostInfo{}
+	case "filesystems":
+		info = &FilesystemsHostInfo{}
+	case "processes":
+		info = &ProcessesHostInfo{}
+	default:
+		log.Error("Invalid Type")
+		os.Exit(1)
+	}
+
+	path := fmt.Sprintf("/entities/%s/agent/host_info/%s", entityId, hostInfoType)
+	restReq := &gorax.RestRequest{
+		Method:              "GET",
+		Path:                path,
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return nil, err
+	}
+	resp.DeserializeBody(info)
+
+	return info, err
 }
 
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
