@@ -161,6 +161,17 @@ type AgentTarget struct {
 	} `json:"values"`
 }
 
+type AgentToken struct {
+	Id    string `json:"id"`
+	Token string `json:"token"`
+	Label string `json:"label"`
+}
+
+type PaginatedAgentTokenList struct {
+	Values   []AgentToken
+	Metadata PaginationMetadata
+}
+
 type PaginatedEntityList struct {
 	Values   []Entity
 	Metadata PaginationMetadata

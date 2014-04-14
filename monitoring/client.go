@@ -211,6 +211,46 @@ func (m *MonitoringClient) AgentTargets(entityId string, agentType string) (inte
 	return info, err
 }
 
+func (m *MonitoringClient) AgentTokenList() ([]AgentToken, error) {
+	tokens := make([]AgentToken, 0)
+	var nextMarker *string
+
+	for true {
+		restReq := &gorax.RestRequest{
+			Method:              "GET",
+			Path:                "/agent_tokens",
+			ExpectedStatusCodes: []int{http.StatusOK},
+		}
+
+		if nextMarker != nil {
+			restReq.Path += "?marker=" + *nextMarker
+		}
+
+		resp, err := m.client.PerformRequest(restReq)
+
+		if err != nil {
+			return nil, err
+		}
+
+		container := &PaginatedAgentTokenList{}
+		err = resp.DeserializeBody(container)
+
+		if err != nil {
+			return nil, err
+		}
+
+		tokens = append(tokens, container.Values...)
+
+		if container.Metadata.NextMarker == nil {
+			break
+		} else {
+			nextMarker = container.Metadata.NextMarker
+		}
+	}
+
+	return tokens, nil
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{
