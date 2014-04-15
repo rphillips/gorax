@@ -177,6 +177,23 @@ type PaginatedEntityList struct {
 	Metadata PaginationMetadata
 }
 
+type AgentConnection struct {
+	Id             string `json:"id"`
+	Guid           string `json:"guid"`
+	AgentId        string `json:"agent_id"`
+	Endpoint       string `json:"endpoint"`
+	Datacenter     string `json:"datacenter"`
+	ProcessVersion string `json:"process_version"`
+	BundleVersion  string `json:"bundle_version"`
+	AgentIp        string `json:"agent_ip"`
+	AgentPort      string `json:"agent_port"`
+}
+
+type PaginatedAgentConnectionList struct {
+	Values   []AgentConnection
+	Metadata PaginationMetadata
+}
+
 // A Check represents a check that the user configures on one of his or her entities.
 // It contains the following fields:
 //

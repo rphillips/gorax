@@ -290,6 +290,46 @@ func (m *MonitoringClient) AgentHostInfo(agentId string, agentType string) (inte
 	return info, err
 }
 
+func (m *MonitoringClient) AgentConnectionsList(agentId string) (interface{}, error) {
+	conns := make([]AgentConnection, 0)
+	var nextMarker *string
+
+	for true {
+		restReq := &gorax.RestRequest{
+			Method:              "GET",
+			Path:                fmt.Sprintf("/agents/%s/connections", agentId),
+			ExpectedStatusCodes: []int{http.StatusOK},
+		}
+
+		if nextMarker != nil {
+			restReq.Path += "?marker=" + *nextMarker
+		}
+
+		resp, err := m.client.PerformRequest(restReq)
+
+		if err != nil {
+			return nil, err
+		}
+
+		container := &PaginatedAgentConnectionList{}
+		err = resp.DeserializeBody(container)
+
+		if err != nil {
+			return nil, err
+		}
+
+		conns = append(conns, container.Values...)
+
+		if container.Metadata.NextMarker == nil {
+			break
+		} else {
+			nextMarker = container.Metadata.NextMarker
+		}
+	}
+
+	return conns, nil
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{
