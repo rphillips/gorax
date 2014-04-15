@@ -370,7 +370,7 @@ func (m *MonitoringClient) CheckTypeList() (interface{}, error) {
 	return types, nil
 }
 
-func (m *MonitoringClient) AgentTokenDelete(id string) error {
+func (m *MonitoringClient) DeleteAgentToken(id string) error {
 	path := fmt.Sprintf("/agent_tokens/%s", id)
 	restReq := &gorax.RestRequest{
 		Method:              "DELETE",
