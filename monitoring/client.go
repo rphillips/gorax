@@ -251,6 +251,45 @@ func (m *MonitoringClient) AgentTokenList() ([]AgentToken, error) {
 	return tokens, nil
 }
 
+func (m *MonitoringClient) AgentHostInfo(agentId string, agentType string) (interface{}, error) {
+	var info interface{}
+
+	switch agentType {
+	case "cpus":
+		info = &CpuHostInfo{}
+	case "memory":
+		info = &MemoryHostInfo{}
+	case "network_interfaces":
+		info = &NetworkInterfaceHostInfo{}
+	case "system":
+		info = &SystemHostInfo{}
+	case "disks":
+		info = &DiskHostInfo{}
+	case "filesystems":
+		info = &FilesystemsHostInfo{}
+	case "processes":
+		info = &ProcessesHostInfo{}
+	default:
+		log.Error("Invalid Type")
+		os.Exit(1)
+	}
+
+	path := fmt.Sprintf("/agents/%s/host_info/%s", agentId, agentType)
+	restReq := &gorax.RestRequest{
+		Method:              "GET",
+		Path:                path,
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return nil, err
+	}
+	resp.DeserializeBody(info)
+
+	return info, err
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{
