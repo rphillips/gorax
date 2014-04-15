@@ -212,6 +212,18 @@ type PaginatedAgentConnectionList struct {
 	Metadata PaginationMetadata
 }
 
+type MonitoringZone struct {
+	Id          string   `json:"id"`
+	Label       string   `json:"label"`
+	CountryCode string   `json:"country_code"`
+	SourceIps   []string `json:"source_ips"`
+}
+
+type PaginatedMonitoringZoneList struct {
+	Values   []MonitoringZone
+	Metadata PaginationMetadata
+}
+
 // A Check represents a check that the user configures on one of his or her entities.
 // It contains the following fields:
 //
