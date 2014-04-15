@@ -167,6 +167,24 @@ type AgentToken struct {
 	Label string `json:"label"`
 }
 
+type CheckType struct {
+	Type    string `json:"type"`
+	Id      string `json:"id"`
+	Channel string `json:"channel"`
+	Fields  []struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+		Optional    bool   `json:"optional"`
+	} `json:"fields"`
+	SupportedPlatforms []string `json:"supported_platforms"`
+	Category           string   `json:"category"`
+}
+
+type PaginatedCheckTypeList struct {
+	Values   []CheckType
+	Metadata PaginationMetadata
+}
+
 type PaginatedAgentTokenList struct {
 	Values   []AgentToken
 	Metadata PaginationMetadata

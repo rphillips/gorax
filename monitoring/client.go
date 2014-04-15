@@ -330,6 +330,46 @@ func (m *MonitoringClient) AgentConnectionsList(agentId string) (interface{}, er
 	return conns, nil
 }
 
+func (m *MonitoringClient) CheckTypeList() (interface{}, error) {
+	types := make([]CheckType, 0)
+	var nextMarker *string
+
+	for true {
+		restReq := &gorax.RestRequest{
+			Method:              "GET",
+			Path:                "/check_types",
+			ExpectedStatusCodes: []int{http.StatusOK},
+		}
+
+		if nextMarker != nil {
+			restReq.Path += "?marker=" + *nextMarker
+		}
+
+		resp, err := m.client.PerformRequest(restReq)
+
+		if err != nil {
+			return nil, err
+		}
+
+		container := &PaginatedCheckTypeList{}
+		err = resp.DeserializeBody(container)
+
+		if err != nil {
+			return nil, err
+		}
+
+		types = append(types, container.Values...)
+
+		if container.Metadata.NextMarker == nil {
+			break
+		} else {
+			nextMarker = container.Metadata.NextMarker
+		}
+	}
+
+	return types, nil
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{
