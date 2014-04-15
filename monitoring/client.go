@@ -370,6 +370,22 @@ func (m *MonitoringClient) CheckTypeList() (interface{}, error) {
 	return types, nil
 }
 
+func (m *MonitoringClient) AgentTokenDelete(id string) error {
+	path := fmt.Sprintf("/agent_tokens/%s", id)
+	restReq := &gorax.RestRequest{
+		Method:              "DELETE",
+		Path:                path,
+		ExpectedStatusCodes: []int{http.StatusNoContent},
+	}
+
+	_, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{
