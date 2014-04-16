@@ -457,6 +457,48 @@ func (m *MonitoringClient) TracerouteMonitoringZone(mzId string, target string, 
 	return route, err
 }
 
+func (m *MonitoringClient) ListMetrics(enId string, chId string) (interface{}, error) {
+	metrics := make([]Metric, 0)
+	var nextMarker *string
+
+	path := fmt.Sprintf("/entities/%s/checks/%s/metrics", enId, chId)
+
+	for true {
+		restReq := &gorax.RestRequest{
+			Method:              "GET",
+			Path:                path,
+			ExpectedStatusCodes: []int{http.StatusOK},
+		}
+
+		if nextMarker != nil {
+			restReq.Path += "?marker=" + *nextMarker
+		}
+
+		resp, err := m.client.PerformRequest(restReq)
+
+		if err != nil {
+			return nil, err
+		}
+
+		container := &PaginatedMetricList{}
+		err = resp.DeserializeBody(container)
+
+		if err != nil {
+			return nil, err
+		}
+
+		metrics = append(metrics, container.Values...)
+
+		if container.Metadata.NextMarker == nil {
+			break
+		} else {
+			nextMarker = container.Metadata.NextMarker
+		}
+	}
+
+	return metrics, nil
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{

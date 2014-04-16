@@ -233,6 +233,17 @@ type MonitoringZoneTraceroute struct {
 	} `json:"result"`
 }
 
+type Metric struct {
+	Name string `json:"name"`
+	Unit string `json:"unit"`
+	Type string `json:"type"`
+}
+
+type PaginatedMetricList struct {
+	Values   []Metric
+	Metadata PaginationMetadata
+}
+
 // A Check represents a check that the user configures on one of his or her entities.
 // It contains the following fields:
 //
