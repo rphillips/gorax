@@ -499,6 +499,25 @@ func (m *MonitoringClient) ListMetrics(enId string, chId string) (interface{}, e
 	return metrics, nil
 }
 
+func (m *MonitoringClient) ListLimits() (interface{}, error) {
+
+	restReq := &gorax.RestRequest{
+		Method:              "GET",
+		Path:                "/limits",
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	limit := &Limit{}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return nil, err
+	}
+	resp.DeserializeBody(limit)
+
+	return limit, err
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{

@@ -244,6 +244,40 @@ type PaginatedMetricList struct {
 	Metadata PaginationMetadata
 }
 
+type Limit struct {
+	Resource struct {
+		Checks int `json:"checks"`
+		Alarms int `json:"alarms"`
+	} `json:"resource"`
+	Rate struct {
+		TestAlarm struct {
+			Limit  int    `json:"limit"`
+			Used   int    `json:"used"`
+			Window string `json:"window"`
+		} `json:"test_alarm"`
+		Global struct {
+			Limit  int    `json:"limit"`
+			Used   int    `json:"used"`
+			Window string `json:"window"`
+		} `json:"global"`
+		Traceroute struct {
+			Limit  int    `json:"limit"`
+			Used   int    `json:"used"`
+			Window string `json:"window"`
+		} `json:"traceroute"`
+		TestNotification struct {
+			Limit  int    `json:"limit"`
+			Used   int    `json:"used"`
+			Window string `json:"window"`
+		} `json:"test_notification"`
+		TestCheck struct {
+			Limit  int    `json:"limit"`
+			Used   int    `json:"used"`
+			Window string `json:"window"`
+		} `json:"test_check"`
+	} `json:"rate"`
+}
+
 // A Check represents a check that the user configures on one of his or her entities.
 // It contains the following fields:
 //
