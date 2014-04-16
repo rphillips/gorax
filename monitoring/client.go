@@ -427,6 +427,36 @@ func (m *MonitoringClient) ListMonitoringZones() (interface{}, error) {
 
 }
 
+func (m *MonitoringClient) TracerouteMonitoringZone(mzId string, target string, resolver string) (interface{}, error) {
+	postData := struct {
+		Target         string `json:"target"`
+		TargetResolver string `json:"target_resolver"`
+	}{
+		target,
+		resolver,
+	}
+
+	path := fmt.Sprintf("/monitoring_zones/%s/traceroute", mzId)
+	restReq := &gorax.RestRequest{
+		Method: "POST",
+		Path:   path,
+		Body: &gorax.JSONRequestBody{
+			Object: postData,
+		},
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	route := &MonitoringZoneTraceroute{}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return nil, err
+	}
+	resp.DeserializeBody(route)
+
+	return route, err
+}
+
 // MakePasswordMonitoringClient creates an object representing the monitoring client, with username/password authentication.
 func MakePasswordMonitoringClient(url string, authurl string, username string, password string) *MonitoringClient {
 	m := &MonitoringClient{

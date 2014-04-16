@@ -224,6 +224,15 @@ type PaginatedMonitoringZoneList struct {
 	Metadata PaginationMetadata
 }
 
+type MonitoringZoneTraceroute struct {
+	Result []struct {
+		Ip       string      `json:"ip"`
+		Hostname interface{} `json:"hostname"`
+		Number   int         `json:"number"`
+		Rtts     []float32   `json:"rtts"`
+	} `json:"result"`
+}
+
 // A Check represents a check that the user configures on one of his or her entities.
 // It contains the following fields:
 //
