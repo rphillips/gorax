@@ -36,6 +36,45 @@ func (m *MonitoringClient) SetDebug(debug bool) {
 	m.client.SetDebug(debug)
 }
 
+func (m *MonitoringClient) CreateEntity(label string, agentId string, metadata map[string]string, ipaddresses map[string]string) (url string, err error) {
+	type entityCreate struct {
+		Label       *string            `json:"label"`
+		AgentId     *string            `json:"agent_id"`
+		Metadata    *map[string]string `json:"metadata"`
+		IPAddresses *map[string]string `json:"ip_addresses"`
+	}
+
+	postData := entityCreate{}
+	if len(label) > 0 {
+		postData.Label = &label
+	}
+	if len(agentId) > 0 {
+		postData.AgentId = &agentId
+	}
+	if len(metadata) > 0 {
+		postData.Metadata = &metadata
+	}
+	if len(ipaddresses) > 0 {
+		postData.IPAddresses = &ipaddresses
+	}
+
+	restReq := &gorax.RestRequest{
+		Method: "POST",
+		Path:   "/entities",
+		Body: &gorax.JSONRequestBody{
+			Object: postData,
+		},
+		ExpectedStatusCodes: []int{http.StatusCreated},
+	}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return "", err
+	}
+
+	return resp.Header.Get("Location"), nil
+}
+
 func (m *MonitoringClient) ListEntities() ([]Entity, error) {
 	entities := make([]Entity, 0)
 	var nextMarker *string
