@@ -321,6 +321,20 @@ type Check struct {
 	Metadata            map[string]interface{} `json:"metadata"`
 }
 
+type CheckCreateStruct struct {
+	Label               *string            `json:"label"`
+	Type                *string            `json:"type"`
+	Details             *map[string]string `json:"details"`
+	MonitoringZonesPoll []string           `json:"monitoring_zones_poll"`
+	Timeout             *int               `json:"timeout"`
+	Period              *int               `json:"period"`
+	TargetAlias         *string            `json:"target_alias"`
+	TargetHostname      *string            `json:"target_hostname"`
+	TargetResolver      *string            `json:"target_resolver"`
+	Disabled            *bool              `json:"disabled"`
+	Metadata            *map[string]string `json:"metadata"`
+}
+
 // A PaginatedCheckList contains a finite subset of the complete set of checks a cloud monitoring user has configured.
 // The Values field contains the array slice representing the set of Check objects.
 type PaginatedCheckList struct {

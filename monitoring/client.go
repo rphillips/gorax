@@ -36,6 +36,25 @@ func (m *MonitoringClient) SetDebug(debug bool) {
 	m.client.SetDebug(debug)
 }
 
+func (m *MonitoringClient) CreateCheck(enId string, check *CheckCreateStruct) (string, error) {
+	path := fmt.Sprintf("/entities/%s/checks", enId)
+	restReq := &gorax.RestRequest{
+		Method: "POST",
+		Path:   path,
+		Body: &gorax.JSONRequestBody{
+			Object: check,
+		},
+		ExpectedStatusCodes: []int{http.StatusCreated},
+	}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return "", err
+	}
+
+	return resp.Header.Get("Location"), nil
+}
+
 func (m *MonitoringClient) CreateEntity(label string, agentId string, metadata map[string]string, ipaddresses map[string]string) (url string, err error) {
 	type entityCreate struct {
 		Label       *string            `json:"label"`
