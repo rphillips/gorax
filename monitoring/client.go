@@ -36,7 +36,37 @@ func (m *MonitoringClient) SetDebug(debug bool) {
 	m.client.SetDebug(debug)
 }
 
-func (m *MonitoringClient) CreateCheck(enId string, check *CheckCreateStruct) (string, error) {
+func (m *MonitoringClient) DeleteCheck(enId string, chId string) error {
+	restReq := &gorax.RestRequest{
+		Method:              "DELETE",
+		Path:                fmt.Sprintf("/entities/%s/checks/%s", enId, chId),
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	_, err := m.client.PerformRequest(restReq)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (m *MonitoringClient) UpdateCheck(enId string, chId string, check interface{}) error {
+	restReq := &gorax.RestRequest{
+		Method: "PUT",
+		Path:   fmt.Sprintf("/entities/%s/checks/%s", enId, chId),
+		Body: &gorax.JSONRequestBody{
+			Object: check,
+		},
+		ExpectedStatusCodes: []int{http.StatusNoContent},
+	}
+
+	_, err := m.client.PerformRequest(restReq)
+	return err
+}
+
+func (m *MonitoringClient) CreateCheck(enId string, check interface{}) (string, error) {
 	path := fmt.Sprintf("/entities/%s/checks", enId)
 	restReq := &gorax.RestRequest{
 		Method: "POST",
