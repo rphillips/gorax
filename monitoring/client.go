@@ -280,6 +280,18 @@ func (m *MonitoringClient) HostInfoEntity(entityId string, hostInfoType string) 
 	return info, err
 }
 
+func (m *MonitoringClient) UpgradeAgent(agentId string) error {
+	restReq := &gorax.RestRequest{
+		Method:              "POST",
+		Path:                fmt.Sprintf("/agents/%s/upgrade", agentId),
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	_, err := m.client.PerformRequest(restReq)
+
+	return err
+}
+
 func (m *MonitoringClient) AgentTargets(entityId string, agentType string) (interface{}, error) {
 	info := &AgentTarget{}
 
