@@ -195,6 +195,16 @@ type PaginatedEntityList struct {
 	Metadata PaginationMetadata
 }
 
+type Agent struct {
+	Id            string `json:"id"`
+	LastConnected uint64 `json:"last_connected"`
+}
+
+type PaginatedAgentList struct {
+	Values   []Agent            `json:"values"`
+	Metadata PaginationMetadata `json:"metadata"`
+}
+
 type AgentConnection struct {
 	Id             string `json:"id"`
 	Guid           string `json:"guid"`

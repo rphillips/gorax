@@ -292,6 +292,23 @@ func (m *MonitoringClient) UpgradeAgent(agentId string) error {
 	return err
 }
 
+func (m *MonitoringClient) AgentList() (interface{}, error) {
+	restReq := &gorax.RestRequest{
+		Method:              "GET",
+		Path:                "/agents",
+		ExpectedStatusCodes: []int{http.StatusOK},
+	}
+
+	resp, err := m.client.PerformRequest(restReq)
+	if err != nil {
+		return nil, err
+	}
+	info := &PaginatedAgentList{}
+	resp.DeserializeBody(info)
+
+	return info, err
+}
+
 func (m *MonitoringClient) AgentTargets(entityId string, agentType string) (interface{}, error) {
 	info := &AgentTarget{}
 
