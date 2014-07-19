@@ -40,7 +40,7 @@ func (m *MonitoringClient) DeleteCheck(enId string, chId string) error {
 	restReq := &gorax.RestRequest{
 		Method:              "DELETE",
 		Path:                fmt.Sprintf("/entities/%s/checks/%s", enId, chId),
-		ExpectedStatusCodes: []int{http.StatusOK},
+		ExpectedStatusCodes: []int{http.StatusNoContent},
 	}
 
 	_, err := m.client.PerformRequest(restReq)
